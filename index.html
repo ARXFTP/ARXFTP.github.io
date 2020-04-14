@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="format-detection" content="telephone=no" />
+</head>
+<body>
+  <audio controls id="audioPlay"></audio>
+  <button id="btnRecord">开始录制</button>
+  <button disabled id="btnPlay">开始播放</button>
+  <button disabled id="btnDownload">开始下载</button>
+  <div id='log_'></div>
+</body>
+<script>
+    window.onerror = function(msg, url, link){
+    log('报错信息', msg, {classList:['red'], focus:true});
+    log('报错行数', link, {classList:['red'], focus:true});
+  };
+
+  var logFlag = true;
+  function log(key, value, options) {
+    var log_ = document.getElementById('log_');
+    options = options || {};
+    var classList = options.classList || [];
+    var keyHtml = '<span style="font-weight: bolder">' + (key || '') + '</span>';
+    var outHtml = '<span class="' + classList.join(' ') + '">' + (value || '') + '</span>';
+    if(options.focus){
+      log_.innerHTML += keyHtml + ": " + outHtml + '<br>';
+      return;
+    }
+    if(logFlag){
+      log_.innerHTML += keyHtml + ": " + outHtml + '<br>';
+      return;
+    }
+  }
+  window.log = log;
+
+
+  var buffer;
+  var audioPlay = document.querySelector('audio#audioPlay');
+  var btnRecord = document.querySelector('button#btnRecord');
+  var btnPlay = document.querySelector('button#btnPlay');
+  var btnDownload = document.querySelector('button#btnDownload');
+  navigator.mediaDevices.getUserMedia({audio:true}).then(gotMediaStream);
+  
+  btnRecord.onclick = () => {
+    if(btnRecord.textContent === '开始录制'){
+      startRecord();
+      btnRecord.textContent = '停止录制';
+      btnPlay.disabled = true;
+      btnDownload.disabled = true;
+    }else{
+      stopRecord();
+      btnRecord.textContent = '开始录制';
+      btnPlay.disabled = false;
+      btnDownload.disabled = false;
+    }
+  }
+  btnPlay.onclick = () => {
+    //使用Blob对象
+    var blob = new Blob(buffer, { type: 'audio/ogg' });
+    //获取资源
+    audioPlay.src = window.URL.createObjectURL(blob);
+    //控制标签
+    audioPlay.controls = true;
+    //开始播放
+    audioPlay.play();
+  }
+  btnDownload.onclick = () => {
+    var blob = new Blob(buffer, { type: 'audio/ogg' });
+    url = window.URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'juejin.ogg';
+    a.click();
+  }
+
+
+  function startRecord(){
+    buffer = [];
+    mediaRecorder = new MediaRecorder(window.stream,{audio:true});
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.start(10) //每隔10毫秒存储一块数据
+  }
+  function stopRecord() {
+    mediaRecorder.stop();
+  }
+  function handleDataAvailable(e) {
+    buffer.push(e.data);
+  }
+  function gotMediaStream(stream){
+      window.stream = stream; 
+  }
+
+
+</script>
+<script>
+</script>
+
+</html>
