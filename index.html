@@ -16,7 +16,7 @@
   <button disabled id="btnDownload">开始下载</button>
   <div id='log_'></div>
 </body>
-<!--script src='./polyfill.js'></script!-->
+<script src='./polyfill.js'></script>
 <script>
   window.onerror = function(msg, url, link){
   log('报错信息', msg, {classList:['red'], focus:true});
@@ -63,20 +63,12 @@ btnRecord.onclick = () => {
   }
 }
 btnPlay.onclick = () => {
-  //使用Blob对象
-  var blob = new Blob(buffer, { type: 'audio/ogg' });
-  //获取资源
-  audioPlay.src = window.URL.createObjectURL(blob);
-  //控制标签
-  audioPlay.controls = true;
   //开始播放
   audioPlay.play();
 }
 btnDownload.onclick = () => {
-  var blob = new Blob(buffer, { type: 'audio/ogg' });
-  url = window.URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = url;
+  a.href = URL_;
   a.download = 'juejin.ogg';
   a.click();
 }
@@ -86,6 +78,11 @@ function startRecord(){
   buffer = [];
   mediaRecorder = new MediaRecorder(window.stream,{audio:true});
   mediaRecorder.ondataavailable = handleDataAvailable;
+  recorder.addEventListener('dataavailable', e => {
+    URL_ = URL.createObjectURL(e.data);
+    audioPlay.src = URL_
+    audioPlay.controls = true;
+  })
   mediaRecorder.start(10) //每隔10毫秒存储一块数据
 }
 function stopRecord() {
