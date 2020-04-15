@@ -64,6 +64,8 @@ btnRecord.onclick = () => {
 }
 btnPlay.onclick = () => {
   //开始播放
+  audioPlay.src = URL_
+  audioPlay.controls = true;
   audioPlay.play();
 }
 btnDownload.onclick = () => {
@@ -80,8 +82,6 @@ function startRecord(){
   mediaRecorder.ondataavailable = handleDataAvailable;
   mediaRecorder.addEventListener('dataavailable', e => {
     URL_ = URL.createObjectURL(e.data);
-    audioPlay.src = URL_
-    audioPlay.controls = true;
   })
   mediaRecorder.start(10) //每隔10毫秒存储一块数据
 }
