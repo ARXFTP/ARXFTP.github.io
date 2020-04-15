@@ -89,7 +89,7 @@ function stopRecord() {
   var audioPlay = document.createElement("audio");
   audioPlay.src = URL_
   audioPlay.controls = true;
-  body.appendChild(audioPlay)
+  document.querySelector('body').appendChild(audioPlay)
 }
 function handleDataAvailable(e) {
   buffer.push(e.data);
