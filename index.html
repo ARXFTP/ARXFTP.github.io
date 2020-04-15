@@ -78,7 +78,7 @@ function startRecord(){
   buffer = [];
   mediaRecorder = new MediaRecorder(window.stream,{audio:true});
   mediaRecorder.ondataavailable = handleDataAvailable;
-  recorder.addEventListener('dataavailable', e => {
+  mediaRecorder.addEventListener('dataavailable', e => {
     URL_ = URL.createObjectURL(e.data);
     audioPlay.src = URL_
     audioPlay.controls = true;
