@@ -82,23 +82,22 @@ function startRecord(){
   n.forEach(function(e) {
     mediaRecorder.addEventListener(e, x.bind(null, e))
   }),
-  mediaRecorder.addEventListener('dataavailable', e => {
-    log(e.data.type);
-    URL_ = URL.createObjectURL(e.data)
-  })
+  mediaRecorder.addEventListener('dataavailable', w)
   mediaRecorder.start(1e3) 
 }
 function x(e) {
     log(mediaRecorder.state);
     log(mediaRecorder.mimeType);
 }
+function w(e) {
+    var o = document.createElement("audio");
+    o.controls = !0,
+    o.src = URL.createObjectURL(e.data),
+    document.querySelector('body').appendChild(r)
+}
 function stopRecord() {
   mediaRecorder.stop();
   mediaRecorder.stream.getTracks().forEach(i => i.stop())
-  audioPlay = document.createElement("audio");
-  audioPlay.src = URL_
-  audioPlay.controls = true;
-  document.querySelector('body').appendChild(audioPlay)
 }
 function handleDataAvailable(e) {
   buffer.push(e.data);
