@@ -13,7 +13,9 @@
   <button id="btnRecord">开始录制</button>
   <button disabled id="btnPlay">开始播放</button>
   <button disabled id="btnDownload">开始下载</button>
+  
   <div id='log_'></div>
+  <div id='audioContainer'></div>
 </body>
 <script src='./polyfill.js'></script>
 <script>
@@ -41,7 +43,6 @@ function log(key, value, options) {
 window.log = log;
 
 
-var buffer;
 var audioPlay = document.querySelector('audio#audioPlay');
 var btnRecord = document.querySelector('button#btnRecord');
 var btnPlay = document.querySelector('button#btnPlay');
@@ -62,22 +63,22 @@ btnRecord.onclick = () => {
   }
 }
 btnPlay.onclick = () => {
-  //开始播放
-  
   audioPlay.play();
 }
 btnDownload.onclick = () => {
   var a = document.createElement('a');
   a.href = URL_;
-  a.download = 'juejin.ogg';
+  a.download = 'test';
   a.click();
 }
 
-
 function startRecord(){
-  buffer = [];
+  var log_ = document.getElementById('log_');
+  log_.innerHTML = '';
+  var audioContainer = document.getElementById('audioContainer');
+  audioContainer.innerHTML = '';
+  
   mediaRecorder = new MediaRecorder(window.stream);
-  //mediaRecorder.ondataavailable = handleDataAvailable;
   n = ["start", "stop", "pause", "resume"]
   n.forEach(function(e) {
     mediaRecorder.addEventListener(e, x.bind(null, e))
@@ -93,14 +94,11 @@ function w(e) {
     var o = document.createElement("audio");
     o.controls = !0,
     o.src = URL.createObjectURL(e.data),
-    document.querySelector('body').appendChild(o)
+    document.querySelector('div#audioContainer').appendChild(o)
 }
 function stopRecord() {
   mediaRecorder.stop();
   mediaRecorder.stream.getTracks().forEach(i => i.stop())
-}
-function handleDataAvailable(e) {
-  buffer.push(e.data);
 }
 function gotMediaStream(stream){
     window.stream = stream; 
