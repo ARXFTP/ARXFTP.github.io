@@ -78,15 +78,23 @@ function startRecord(){
   buffer = [];
   mediaRecorder = new MediaRecorder(window.stream,{audio:true});
   //mediaRecorder.ondataavailable = handleDataAvailable;
+  n = ["start", "stop", "pause", "resume"]
+  n.forEach(function(e) {
+    mediaRecorder.addEventListener(e, x.bind(null, e))
+  }),
   mediaRecorder.addEventListener('dataavailable', e => {
     URL_ = URL.createObjectURL(e.data)
   })
   mediaRecorder.start(1e3) 
 }
+function x(e) {
+    log(mediaRecorder.state);
+    log(mediaRecorder.mimeType);
+}
 function stopRecord() {
   mediaRecorder.stop();
   mediaRecorder.stream.getTracks().forEach(i => i.stop())
-  var audioPlay = document.createElement("audio");
+  audioPlay = document.createElement("audio");
   audioPlay.src = URL_
   audioPlay.controls = true;
   document.querySelector('body').appendChild(audioPlay)
