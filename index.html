@@ -47,7 +47,6 @@ var audioPlay = document.querySelector('audio#audioPlay');
 var btnRecord = document.querySelector('button#btnRecord');
 var btnPlay = document.querySelector('button#btnPlay');
 var btnDownload = document.querySelector('button#btnDownload');
-navigator.mediaDevices.getUserMedia({audio:true}).then(gotMediaStream);
 
 btnRecord.onclick = () => {
   if(btnRecord.textContent === '开始录制'){
@@ -77,14 +76,15 @@ function startRecord(){
   log_.innerHTML = '';
   var audioContainer = document.getElementById('audioContainer');
   audioContainer.innerHTML = '';
-  
-  mediaRecorder = new MediaRecorder(window.stream);
-  n = ["start", "stop", "pause", "resume"]
-  n.forEach(function(e) {
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    mediaRecorder = new MediaRecorder(stream);
+    n = ["start", "stop", "pause", "resume"]
+    n.forEach(function(e) {
     mediaRecorder.addEventListener(e, x.bind(null, e))
-  }),
-  mediaRecorder.addEventListener('dataavailable', w)
-  mediaRecorder.start() 
+    }),
+    mediaRecorder.addEventListener('dataavailable', w)
+    mediaRecorder.start() 
+  });
 }
 function x(e) {
     log(mediaRecorder.state);
@@ -101,9 +101,6 @@ function w(e) {
 function stopRecord() {
   mediaRecorder.stop();
   mediaRecorder.stream.getTracks().forEach(i => i.stop())
-}
-function gotMediaStream(stream){
-    window.stream = stream; 
 }
 </script>
 </html>
