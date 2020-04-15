@@ -94,6 +94,7 @@ function w(e) {
     var o = document.createElement("audio");
     o.controls = !0,
     o.src = URL.createObjectURL(e.data),
+    audioPlay = o;
     document.querySelector('div#audioContainer').appendChild(o)
 }
 function stopRecord() {
