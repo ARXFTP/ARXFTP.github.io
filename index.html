@@ -83,7 +83,7 @@ function startRecord(){
     mediaRecorder.addEventListener(e, x.bind(null, e))
   }),
   mediaRecorder.addEventListener('dataavailable', w)
-  mediaRecorder.start(1e3) 
+  mediaRecorder.start() 
 }
 function x(e) {
     log(mediaRecorder.state);
