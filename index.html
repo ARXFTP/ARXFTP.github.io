@@ -93,7 +93,8 @@ function x(e) {
 function w(e) {
     var o = document.createElement("audio");
     o.controls = !0,
-    o.src = URL.createObjectURL(e.data),
+    URL_ = URL.createObjectURL(e.data),
+    o.src = URL_,
     audioPlay = o;
     document.querySelector('div#audioContainer').appendChild(o)
 }
