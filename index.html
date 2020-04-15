@@ -79,11 +79,11 @@ btnDownload.onclick = () => {
 function startRecord(){
   buffer = [];
   mediaRecorder = new MediaRecorder(window.stream,{audio:true});
-  mediaRecorder.ondataavailable = handleDataAvailable;
+  //mediaRecorder.ondataavailable = handleDataAvailable;
   mediaRecorder.addEventListener('dataavailable', e => {
     URL_ = URL.createObjectURL(e.data);
   })
-  mediaRecorder.start(10) //每隔10毫秒存储一块数据
+  mediaRecorder.start(1e3) //每隔10毫秒存储一块数据
 }
 function stopRecord() {
   mediaRecorder.stop();
