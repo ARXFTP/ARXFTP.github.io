@@ -87,6 +87,7 @@ function startRecord(){
 }
 function stopRecord() {
   mediaRecorder.stop();
+  mediaRecorder.stream.getTracks().forEach(i => i.stop())
 }
 function handleDataAvailable(e) {
   buffer.push(e.data);
