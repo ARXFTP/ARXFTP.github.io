@@ -76,13 +76,14 @@ btnDownload.onclick = () => {
 
 function startRecord(){
   buffer = [];
-  mediaRecorder = new MediaRecorder(window.stream,{audio:true});
+  mediaRecorder = new MediaRecorder(window.stream);
   //mediaRecorder.ondataavailable = handleDataAvailable;
   n = ["start", "stop", "pause", "resume"]
   n.forEach(function(e) {
     mediaRecorder.addEventListener(e, x.bind(null, e))
   }),
   mediaRecorder.addEventListener('dataavailable', e => {
+    log(e.data.type);
     URL_ = URL.createObjectURL(e.data)
   })
   mediaRecorder.start(1e3) 
