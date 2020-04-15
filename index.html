@@ -10,7 +10,6 @@
   <meta name="format-detection" content="telephone=no" />
 </head>
 <body>
-  <audio controls id="audioPlay"></audio>
   <button id="btnRecord">开始录制</button>
   <button disabled id="btnPlay">开始播放</button>
   <button disabled id="btnDownload">开始下载</button>
@@ -64,8 +63,7 @@ btnRecord.onclick = () => {
 }
 btnPlay.onclick = () => {
   //开始播放
-  audioPlay.src = URL_
-  audioPlay.controls = true;
+  
   audioPlay.play();
 }
 btnDownload.onclick = () => {
@@ -81,13 +79,17 @@ function startRecord(){
   mediaRecorder = new MediaRecorder(window.stream,{audio:true});
   //mediaRecorder.ondataavailable = handleDataAvailable;
   mediaRecorder.addEventListener('dataavailable', e => {
-    URL_ = URL.createObjectURL(e.data);
+    URL_ = URL.createObjectURL(e.data)
   })
-  mediaRecorder.start(1e3) //每隔10毫秒存储一块数据
+  mediaRecorder.start(1e3) 
 }
 function stopRecord() {
   mediaRecorder.stop();
   mediaRecorder.stream.getTracks().forEach(i => i.stop())
+  var audioPlay = document.createElement("audio");
+  audioPlay.src = URL_
+  audioPlay.controls = true;
+  body.appendChild(audioPlay)
 }
 function handleDataAvailable(e) {
   buffer.push(e.data);
