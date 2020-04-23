@@ -1,7 +1,7 @@
 var APPCODE = '5942591bb99a4bb8b0a9477a5a532b8c';
 // TODO 配置项里应该新增这个
 
-define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
+define([], function(){
 
   var IdentifyingSound = {
     mediaRecorder: null,
@@ -18,6 +18,7 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
     },
     startRecord: function(){
       var that = this;
+      console.log(MediaRecorder);
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
         log("获取权限");
         log("000000");
