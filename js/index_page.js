@@ -75,7 +75,28 @@ define(['js/utils/common.js',
 
 
 
-
+			window.onerror = function(msg, url, link){
+				log('报错信息', msg, {classList:['red'], focus:true});
+				log('报错行数', link, {classList:['red'], focus:true});
+			};
+			
+			var logFlag = true;
+			function log(key, value, options) {
+				var log_ = document.getElementById('log_');
+				options = options || {};
+				var classList = options.classList || [];
+				var keyHtml = '<span style="font-weight: bolder">' + (key || '') + '</span>';
+				var outHtml = '<span class="' + classList.join(' ') + '">' + (value || '') + '</span>';
+				if(options.focus){
+					log_.innerHTML += keyHtml + ": " + outHtml + '<br>';
+					return;
+				}
+				if(logFlag){
+					log_.innerHTML += keyHtml + ": " + outHtml + '<br>';
+					return;
+				}
+			}
+			window.log = log;
 
 
 
