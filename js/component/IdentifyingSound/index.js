@@ -26,19 +26,23 @@ define([], function(){
         n = ["start", "stop", "pause", "resume"]
         log("1");
         n.forEach(function(e) {
-          that.mediaRecorder.addEventListener(e, that.onEvent.bind(null, e))
+          that.mediaRecorder.addEventListener(e, that.onEvent.bind(that, e))
         }),
         log("2");
-        that.mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent)
+        that.mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent.bind(that, e))
         log("3");
         that.mediaRecorder.start();
         log("4");
       });
     },
     onEvent: function(){
+      var that = this;
       var mediaRecorder = this.mediaRecorder;
-      console.log(mediaRecorder.state);
-      console.log(mediaRecorder.mimeType);
+      log(mediaRecorder.state);
+      log(mediaRecorder.mimeType);
+      if(mediaRecorder.state == "stop"){
+        that.successCallback && that.successCallback(that.soundData);
+      }
     },
     onDataavailableEvent: function(e){
       this.soundData = e.data

@@ -37,8 +37,11 @@ define(['js/utils/common.js',
 
 			// 声音识别例子
 			var obj1 = Object.create(IdentifyingSound);
-			obj1.init(function(){
-
+			obj1.init(function(data){
+				var o = document.createElement("audio");
+				o.controls = !0;
+				o.src = URL.createObjectURL(data);
+				document.querySelector('div#audioContainer').appendChild(o)
 			}, function(){
 
 			})
@@ -56,13 +59,6 @@ define(['js/utils/common.js',
 					btnRecord.textContent = '开始录制';
 					btnPlay.disabled = false;
 					btnDownload.disabled = false;
-
-					var o = document.createElement("audio");
-					o.controls = !0,
-					URL_ = URL.createObjectURL(obj1.soundData),
-					o.src = URL_,
-					audioPlay = o;
-					document.querySelector('div#audioContainer').appendChild(o)
 				}
 			}
 			btnDownload.onclick = () => {
