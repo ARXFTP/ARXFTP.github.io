@@ -19,7 +19,8 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
     startRecord: function(){
       var that = this;
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
-        let mediaRecorder = new MediaRecorder(stream);
+        log("获取权限");
+        var mediaRecorder = new MediaRecorder(stream);
         n = ["start", "stop", "pause", "resume"]
         n.forEach(function(e) {
           mediaRecorder.addEventListener(e, that.onEvent.bind(null, e))
