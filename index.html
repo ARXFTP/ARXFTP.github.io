@@ -117,7 +117,8 @@ socket.addEventListener('open', function (event) {
   log('Hello Server!');
 });
 socket.addEventListener('message', function (event) {
-  console.log('Message from server ', event.data);
+  log('Message from server ', event.data);
+  log('Message from server ', JSON.stringify(event));
 });
 var API = {
   sendWebSocket: function (soundPostData, successCallback, failedCallback) {
