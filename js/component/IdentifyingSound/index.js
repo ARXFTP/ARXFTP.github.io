@@ -30,6 +30,7 @@ define([], function(){
         }),
         log("2");
         that.mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent.bind(that))
+        that.mediaRecorder.addEventListener('stop', that.onStopEvent.bind(that))
         log("3");
         that.mediaRecorder.start();
         log("4");
@@ -40,9 +41,13 @@ define([], function(){
       var mediaRecorder = this.mediaRecorder;
       log(mediaRecorder.state);
       log(mediaRecorder.mimeType);
-      if(mediaRecorder.state == "stop"){
-        that.successCallback && that.successCallback(that.soundData);
-      }
+    },
+    onStopEvent: function(){
+      var that = this;
+      var mediaRecorder = this.mediaRecorder;
+      log(mediaRecorder.state);
+      log(mediaRecorder.mimeType);
+      that.successCallback && that.successCallback(that.soundData);
     },
     onDataavailableEvent: function(e){
       this.soundData = e.data
