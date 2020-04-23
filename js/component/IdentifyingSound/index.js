@@ -29,7 +29,7 @@ define([], function(){
           that.mediaRecorder.addEventListener(e, that.onEvent.bind(that, e))
         }),
         log("2");
-        that.mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent.bind(that, e))
+        that.mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent.bind(that))
         log("3");
         that.mediaRecorder.start();
         log("4");
