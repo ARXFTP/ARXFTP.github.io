@@ -22,11 +22,15 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
         log("获取权限");
         var mediaRecorder = new MediaRecorder(stream);
         n = ["start", "stop", "pause", "resume"]
+        log("1");
         n.forEach(function(e) {
           mediaRecorder.addEventListener(e, that.onEvent.bind(null, e))
         }),
+        log("2");
         mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent)
+        log("3");
         mediaRecorder.start();
+        log("4");
         that.mediaRecorder = mediaRecorder;
         log("初始化完毕");
         log(JSON.stringify(that));
