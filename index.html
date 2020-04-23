@@ -1,130 +1,18 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <title></title>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-  <meta http-equiv="x-dns-prefetch-control" content="on">
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta name="format-detection" content="telephone=no" />
+	<meta charset="UTF-8" />
+	<title></title>
+	<link rel="stylesheet" href="frame/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="style/index.css" />
+	<script src="frame/jquery-3.4.1.min.js"></script>
+	<script src="frame/require.js"></script>
+	<script src=""></script>
+	<script src="js/index.js"></script>
 </head>
 <body>
-  <button id="btnRecord">开始录制</button>
-  <button disabled id="btnPlay">开始播放</button>
-  <button disabled id="btnDownload">开始下载</button>
-  
-  <div id='log_'></div>
-  <div id='audioContainer'></div>
+	<div id="app">
+		
+	</div>
 </body>
-<script src='./polyfill.js'></script>
-<script>
-  window.onerror = function(msg, url, link){
-  log('报错信息', msg, {classList:['red'], focus:true});
-  log('报错行数', link, {classList:['red'], focus:true});
-};
-
-var logFlag = true;
-function log(key, value, options) {
-  var log_ = document.getElementById('log_');
-  options = options || {};
-  var classList = options.classList || [];
-  var keyHtml = '<span style="font-weight: bolder">' + (key || '') + '</span>';
-  var outHtml = '<span class="' + classList.join(' ') + '">' + (value || '') + '</span>';
-  if(options.focus){
-    log_.innerHTML += keyHtml + ": " + outHtml + '<br>';
-    return;
-  }
-  if(logFlag){
-    log_.innerHTML += keyHtml + ": " + outHtml + '<br>';
-    return;
-  }
-}
-window.log = log;
-
-var DATA_SOUND;
-var audioPlay = document.querySelector('audio#audioPlay');
-var btnRecord = document.querySelector('button#btnRecord');
-var btnPlay = document.querySelector('button#btnPlay');
-var btnDownload = document.querySelector('button#btnDownload');
-
-btnRecord.onclick = () => {
-  if(btnRecord.textContent === '开始录制'){
-    startRecord();
-    btnRecord.textContent = '停止录制';
-    btnPlay.disabled = true;
-    btnDownload.disabled = true;
-  }else{
-    stopRecord();
-    btnRecord.textContent = '开始录制';
-    btnPlay.disabled = false;
-    btnDownload.disabled = false;
-  }
-}
-btnPlay.onclick = () => {
-  audioPlay.play();
-}
-btnDownload.onclick = () => {
-  var a = document.createElement('a');
-  a.href = URL_;
-  a.download = 'test';
-  a.click();
-}
-
-function startRecord(){
-  var log_ = document.getElementById('log_');
-  log_.innerHTML = '';
-  var audioContainer = document.getElementById('audioContainer');
-  audioContainer.innerHTML = '';
-  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
-    mediaRecorder = new MediaRecorder(stream);
-    n = ["start", "stop", "pause", "resume"]
-    n.forEach(function(e) {
-    mediaRecorder.addEventListener(e, x.bind(null, e))
-    }),
-    mediaRecorder.addEventListener('dataavailable', w)
-    mediaRecorder.start() 
-  });
-}
-function x(e) {
-    log(mediaRecorder.data);
-    log(mediaRecorder.data);
-    log(mediaRecorder.state);
-    log(mediaRecorder.mimeType);
-}
-function w(e) {
-    var o = document.createElement("audio");
-    o.controls = !0,
-    URL_ = URL.createObjectURL(e.data),
-    o.src = URL_,
-    audioPlay = o;
-    DATA_SOUND = e.data
-    document.querySelector('div#audioContainer').appendChild(o)
-
-
-}
-function stopRecord() {
-  mediaRecorder.stop();
-  mediaRecorder.stream.getTracks().forEach(i => i.stop())
-
-  API.sendWebSocket(DATA_SOUND);
-}
-
-
-let socket;
-socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
-socket.addEventListener('open', function (event) {
-  log('Hello Server!');
-});
-socket.addEventListener('message', function (event) {
-  log('Message from server ', event.data);
-  log('Message from server ', JSON.stringify(event));
-});
-var API = {
-  sendWebSocket: function (soundPostData, successCallback, failedCallback) {
-    socket.send(soundPostData);    
-  },
-};
-
-</script>
 </html>

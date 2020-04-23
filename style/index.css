@@ -1,0 +1,38 @@
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+#app {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.nav_header{
+	width:100%;
+	height:0.96em;
+	line-height:0.96em;
+	background-color:#1ba9df;
+	color:#ffffff;
+	text-align:center;
+	position:relative
+}
+.nav_header_back{
+	top:0.28em;
+	position:absolute;
+	left:0.3em;
+	display:block;
+	width: 0.43em;
+	height:auto
+}
+
+.page-view {
+	width: 100%;
+	height:calc(100% - 0.96em);
+}
