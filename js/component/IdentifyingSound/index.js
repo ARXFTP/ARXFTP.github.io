@@ -20,6 +20,7 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
       var that = this;
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
         log("获取权限");
+        log("0");
         var mediaRecorder = new MediaRecorder(stream);
         n = ["start", "stop", "pause", "resume"]
         log("1");
