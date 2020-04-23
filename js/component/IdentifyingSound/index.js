@@ -28,8 +28,8 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
         mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent)
         mediaRecorder.start();
         that.mediaRecorder = mediaRecorder;
-        log(mediaRecorder);
-        log(that.mediaRecorder);
+        log("初始化完毕");
+        log(JSON.stringify(that));
       });
     },
     onEvent: function(){
