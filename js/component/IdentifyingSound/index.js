@@ -18,7 +18,6 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
     },
     startRecord: function(){
       var that = this;
-      that.soundData = null;
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
         let mediaRecorder = new MediaRecorder(stream);
         n = ["start", "stop", "pause", "resume"]
@@ -28,6 +27,8 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
         mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent)
         mediaRecorder.start();
         that.mediaRecorder = mediaRecorder;
+        log(mediaRecorder);
+        log(that.mediaRecorder);
       });
     },
     onEvent: function(){
@@ -39,6 +40,8 @@ define(['js/component/IdentifyingSound/polyfill.js'], function(MediaRecorder){
       this.soundData = e.data
     },
     stopRecord: function(){
+      log(JSON.stringify(this));
+      log(this.mediaRecorder);
       var mediaRecorder = this.mediaRecorder;
       mediaRecorder.stop();
       mediaRecorder.stream.getTracks().forEach(i => i.stop())
