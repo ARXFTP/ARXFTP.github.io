@@ -42,7 +42,7 @@ function log(key, value, options) {
 }
 window.log = log;
 
-
+var DATA_SOUND;
 var audioPlay = document.querySelector('audio#audioPlay');
 var btnRecord = document.querySelector('button#btnRecord');
 var btnPlay = document.querySelector('button#btnPlay');
@@ -88,7 +88,7 @@ function startRecord(){
 }
 function x(e) {
     log(mediaRecorder.data);
-    log(mediaRecorder.data.type);
+    log(mediaRecorder.data);
     log(mediaRecorder.state);
     log(mediaRecorder.mimeType);
 }
