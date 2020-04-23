@@ -111,16 +111,17 @@ function stopRecord() {
 }
 
 
+let socket;
+socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
+socket.addEventListener('open', function (event) {
+  log('Hello Server!');
+});
+socket.addEventListener('message', function (event) {
+  console.log('Message from server ', event.data);
+});
 var API = {
   sendWebSocket: function (soundPostData, successCallback, failedCallback) {
-    const socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
-    socket.addEventListener('open', function (event) {
-      socket.send('Hello Server!');
-    });
-    socket.addEventListener('message', function (event) {
-      console.log('Message from server ', event.data);
-    });
-    socket.send(soundPostData);
+    socket.send(soundPostData);    
   },
 };
 
