@@ -87,6 +87,8 @@ function startRecord(){
   });
 }
 function x(e) {
+    log(mediaRecorder.data);
+    log(mediaRecorder.data.type);
     log(mediaRecorder.state);
     log(mediaRecorder.mimeType);
 }
@@ -96,11 +98,31 @@ function w(e) {
     URL_ = URL.createObjectURL(e.data),
     o.src = URL_,
     audioPlay = o;
+    DATA_SOUND = e.data
     document.querySelector('div#audioContainer').appendChild(o)
+
+
 }
 function stopRecord() {
   mediaRecorder.stop();
   mediaRecorder.stream.getTracks().forEach(i => i.stop())
+
+  API.sendWebSocket(DATA_SOUND);
 }
+
+
+var API = {
+  sendWebSocket: function (soundPostData, successCallback, failedCallback) {
+    const socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
+    socket.addEventListener('open', function (event) {
+      socket.send('Hello Server!');
+    });
+    socket.addEventListener('message', function (event) {
+      console.log('Message from server ', event.data);
+    });
+    socket.send(soundPostData);
+  },
+};
+
 </script>
 </html>
