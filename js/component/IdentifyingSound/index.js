@@ -1,7 +1,5 @@
 var APPCODE = '5942591bb99a4bb8b0a9477a5a532b8c';
 // TODO 配置项里应该新增这个
-log("20204_24_14_24");
-
 define([], function(){
 
   var IdentifyingSound = {
@@ -20,6 +18,7 @@ define([], function(){
     startRecord: function(){
       var that = this;
       console.log(MediaRecorder);
+      log("20204_24_14_24");
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
         log("获取权限");
         log("000000");
