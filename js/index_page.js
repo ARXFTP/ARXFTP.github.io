@@ -65,7 +65,8 @@ define(['js/utils/common.js',
 			}
 			btnDownload.onclick = () => {
 				var a = document.createElement('a');
-				a.href = obj1.soundData;
+				URL_ = URL.createObjectURL(obj1.soundData),
+				a.href = URL_;
 				a.download = 'test';
 				a.click();
 			}
