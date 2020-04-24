@@ -23,7 +23,9 @@ define(['js/utils/common.js',
 			jq("#"+containerId+"").append("<div id=\"next_page_button\" style=\"border:1px red sold;width:100%;height:150px\">跳下一页</div>");
 			var CommonApiObj = new CommonApi();
 
+			var logFlag = true;
 
+			log("2020/4/24/14/36");
 
 			// 图片识别例子
 			var obj = Object.create(IdentifyingPhotos);
@@ -76,7 +78,6 @@ define(['js/utils/common.js',
 				log('报错行数', link, {classList:['red'], focus:true});
 			};
 			
-			var logFlag = true;
 			function log(key, value, options) {
 				var log_ = document.getElementById('log_');
 				options = options || {};
