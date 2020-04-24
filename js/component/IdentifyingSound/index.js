@@ -12,13 +12,13 @@ define([], function(){
       this.bindEvent();
     },
     initView: function(){
+      API.openWebSocket();
     },
     bindEvent: function() {
     },
     startRecord: function(){
       var that = this;
       console.log(MediaRecorder);
-      log("20204_24_14_24");
       navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
         log("获取权限");
         log("000000");
@@ -48,6 +48,7 @@ define([], function(){
       log(mediaRecorder.state);
       log(mediaRecorder.mimeType);
       that.successCallback && that.successCallback(that.soundData);
+      API.send(that.soundData);
     },
     onDataavailableEvent: function(e){
       this.soundData = e.data
@@ -68,19 +69,20 @@ define([], function(){
     openWebSocket: function (successCallback, failedCallback){
       let socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
       socket.addEventListener('open', function (event) {
-        console.log('WebSocket open', event);
+        log('WebSocket open' + JSON.stringify(event));
       });
       socket.addEventListener('close', function (event) {
-        console.log('WebSocket close', event);
+        log('WebSocket close'+ JSON.stringify(event));
       });
       socket.addEventListener('message', function (event) {
-        console.log('Message from server ', event.data);
+        log('Message from server '+ JSON.stringify(event));
       });
       socket.addEventListener('error', function (event) {
-        console.log('WebSocket error: ', event);
+        log('WebSocket error: '+ JSON.stringify(event));
       });
+      this.socket = socket;
     },
-    send: function (soundPostData, ) {
+    send: function (soundPostData) {
       this.socket.send(soundPostData);
     },
   };
