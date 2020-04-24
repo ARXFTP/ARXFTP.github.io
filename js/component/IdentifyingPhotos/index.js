@@ -1,7 +1,7 @@
 var APPCODE = '5942591bb99a4bb8b0a9477a5a532b8c';
 // TODO 配置项里应该新增这个
 
-define(['https://static.itv.cctv.com/2020whjy/js/html2canvas.min.js'], function(html2canvas){
+define(['js/component/IdentifyingPhotos/html2canvas.min.js'], function(html2canvas){
   var AllowImgFileSize = 2100000; // 图片限制大小
 
   var $input = $('<input type="file" accept="image/*" style="display: none;">');

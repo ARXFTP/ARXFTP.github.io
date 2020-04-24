@@ -1,0 +1,33 @@
+1. RequireJS
+  RequireJS is a JavaScript file and module loader.
+  It is optimized for in-browser use, but it can be used in other JavaScript environments, like Rhino and Node.
+  Using a modular script loader like RequireJS will improve the speed and quality of your code.
+
+  IE 6+ .......... compatible ✔
+  Firefox 2+ ..... compatible ✔
+  Safari 3.2+ .... compatible ✔
+  Chrome 3+ ...... compatible ✔
+  Opera 10+ ...... compatible ✔
+
+2. Vue-2.6
+兼容性
+Vue 不支持 IE8 及以下版本，因为 Vue 使用了 IE8 无法模拟的 ECMAScript 5 特性。但它支持所有兼容 ECMAScript 5 的浏览器。
+
+3. VueRouter-3.1.6
+  This is vue-router 3.0 which works only with Vue 2.0.
+  VERSION NOTE
+  For TypeScript users, vue-router@3.0+ requires vue@2.5+, and vice versa.
+
+4. jquery-3.4.1
+  Current Active Support
+  Desktop
+    Chrome: (Current - 1) and Current
+    Edge: (Current - 1) and Current
+    Firefox: (Current - 1) and Current, ESR
+    Internet Explorer: 9+
+    Safari: (Current - 1) and Current
+    Opera: Current
+  Mobile
+    Stock browser on Android 4.0+
+    Safari on iOS 7+
+
