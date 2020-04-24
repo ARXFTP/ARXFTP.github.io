@@ -83,6 +83,7 @@ define([], function(){
       this.socket = socket;
     },
     send: function (soundPostData) {
+      log(soundPostData + '');
       this.socket.send(soundPostData);
     },
   };
