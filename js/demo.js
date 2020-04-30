@@ -50,31 +50,30 @@ define(['js/utils/common.js',
         // 获取设备的录音权限，如果是第一次，浏览器会弹框跟用户确认
         obj1.getUserMedia(function(){
           log('成功获取到录音权限');
-
-
-          var btnRecord = document.querySelector('button#btnRecord');
-          btnRecord.onclick = function(){
-            if(btnRecord.textContent === '开始录制'){
-              //开始录音
-              obj1.startRecord();
-              btnRecord.textContent = '停止录制';
-            }else{
-              //停止录音
-              obj1.stopRecord(function(result){
-                obj1.getResultByUploadSound(result, function(data){
-                  log(JSON.stringify(data.data));
-                }, function(error){
-                  log(error);                  
-                });
-              });
-              btnRecord.textContent = '开始录制';
-            }
-          }
-
         }, function(error){
           log(error);
           log('未能获取到录音权限');
         });
+
+        var btnRecord = document.querySelector('button#btnRecord');
+        btnRecord.onclick = function(){
+          if(btnRecord.textContent === '开始录制'){
+            //开始录音
+            obj1.startRecord();
+            btnRecord.textContent = '停止录制';
+          }else{
+            //停止录音
+            obj1.stopRecord(function(result){
+              obj1.getResultByUploadSound(result, function(data){
+                log(JSON.stringify(data.data));
+              }, function(error){
+                log(error);                  
+              });
+            });
+            btnRecord.textContent = '开始录制';
+          }
+        }
+
       }else{
         log('设备不支持');
       }
