@@ -1,15 +1,7 @@
-var APPCODE = '5942591bb99a4bb8b0a9477a5a532b8c';
-// TODO 配置项里应该新增这个
-define([], function(){
-
+define(['js/utils/IdentifyingSound/polyfill.js'], function(MediaRecorder){
 var IdentifyingSound = {
   mediaRecorder: null,
   soundData: null,
-  init: function(successCallback, failedCallback){
-    var that = this;
-    that.successCallback = successCallback;
-    that.failedCallback = failedCallback;
-  },
   isSupportRecord: function(){
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       return true;
@@ -17,52 +9,69 @@ var IdentifyingSound = {
       return false;
     }
   },
+  getUserMedia: function(successCallback, failedCallback){
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+      successCallback && successCallback(stream);
+    }).catch(function(error){
+      failedCallback && failedCallback(error);
+    });
+  },
   startRecord: function(){
     var that = this;
     navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
       that.mediaRecorder = new MediaRecorder(stream);
-      that.mediaRecorder.addEventListener('dataavailable', that.onDataavailableEvent.bind(that))
-      that.mediaRecorder.addEventListener('stop', that.onStopEvent.bind(that))
-      that.mediaRecorder.start();
-
-      API.create_WebSocket();
-      API.bindEvent_WebSocketEvent({
-        openCallback: function(result){
-        },
-        closeCallback: function(result){
-        },
-        messageCallback: function(result){
-          that.successCallback && that.successCallback(result);
-          API.close_WebSocket();
-        },
-        errorCallback: function(result){
-          that.failedCallback && that.failedCallback('websocket error', result);
-        },
-      });
-    }).catch(function(){
-      that.failedCallback('录音功能异常');
-    });    
+      that.mediaRecorder.addEventListener('dataavailable', function(e){
+        that.soundData = e.data;
+      })
+      that.mediaRecorder.start();  
+    }).catch(function(error){
+      failedCallback && failedCallback(error);
+    });
   },
-  onStopEvent: function(){
+  stopRecord: function(successCallback){
     var that = this;
-    API.send_WebSocket(that.soundData);
-    API.send_WebSocket('');
-  },
-  onDataavailableEvent: function(e){
-    this.soundData = e.data
-  },
-  stopRecord: function(){
-    var mediaRecorder = this.mediaRecorder;
+    var mediaRecorder = that.mediaRecorder;
+    that.mediaRecorder.addEventListener('stop', function(){
+      var data = that.soundData;
+      successCallback && successCallback(data);
+    });
     mediaRecorder.stop();
     mediaRecorder.stream.getTracks().forEach(i => i.stop())
-  }
+  },
+  getResultByUploadSound: function(data, successCallback, failedCallback){
+    var that = this;
+    API.create_WebSocket();
+    API.bindEvent_WebSocketEvent({
+      openCallback: function(result){
+        API.send_WebSocket(data);
+        API.send_WebSocket('');    
+      },
+      closeCallback: function(result){
+      },
+      messageCallback: function(result){
+        successCallback && successCallback(result);
+        API.close_WebSocket();
+      },
+      errorCallback: function(error){
+        failedCallback && failedCallback(error);
+      },
+    });
+  },
+
+  getSemantic: function(options, successCallback, failedCallback){
+    API.getSemantic(options, successCallback, failedCallback);
+  },
+
+  getRecoverWord: function(options, successCallback, failedCallback){
+    API.getRecoverWord(options, successCallback, failedCallback);
+  },
 }  
 
 //  仅调通WebSocket接口 暂未调通POST stream/1接口
 var API = {
   socket: null,
   create_WebSocket: function (){
-    var socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
+    var socket = new WebSocket(speechWebsocketRequest);
     this.socket = socket;
   },
   bindEvent_WebSocketEvent:function(options){
@@ -86,6 +95,64 @@ var API = {
   close_WebSocket: function () {
     this.socket.close();
   },
+
+  getSemantic: function(options, successCallback, failedCallback){
+    var that = this;
+    var url = speechSemanticRequest + '?';
+    if(options.sentence){
+      url += "sentence=" + encodeURIComponent(options.sentence) + "&";
+    }
+    if(typeof speechSemanticRequest_Siteid !== 'undefined'){
+      url += "siteid=" + speechSemanticRequest_Siteid;
+    }
+    $.ajax({
+      type: 'GET',
+      async: true,
+      url: url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      dataType: 'json',
+    }).done(function (data, status, xhr) {
+      successCallback && successCallback(data);
+    }).fail(function (jqXHR, textStatus) {
+      failedCallback && failedCallback(jqXHR, textStatus);
+    });
+  },
+
+  getRecoverWord: function(options, successCallback, failedCallback){
+    var that = this;
+    var url = garbageClassificationByKeywordRequest + '?';
+    if(options.name){
+      url += "name=" + encodeURIComponent(options.name) + "&";
+    }
+    if(typeof garbageClassificationCity !== 'undefined'){
+      url += "city=" + garbageClassificationCity;
+    }
+    var Authorization = "";
+    if(typeof APPCODE !== 'undefined'){
+      Authorization = 'APPCODE ' + APPCODE;
+    }
+    $.ajax({
+      type: 'GET',
+      async: true,
+      url: url,
+      headers: {
+        'Authorization': Authorization,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      dataType: 'json',
+    }).done(function (data, status, xhr) {
+      successCallback && successCallback(data);
+    }).fail(function (jqXHR, textStatus) {
+      failedCallback && failedCallback(jqXHR, textStatus);
+    });
+  },
+
+
+  // 未跑通
   sendWav: function(options, callback){
     var that = this;
     var url = 'http://speech.xor-live.io/aquadaas/rest/speech/stream/1?audiotype=pcm&audiorate=8000';
