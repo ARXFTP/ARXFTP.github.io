@@ -71,7 +71,8 @@ define(['js/utils/common.js',
             }
           }
 
-        }, function(){
+        }, function(error){
+          log(error);
           log('未能获取到录音权限');
         });
       }else{
